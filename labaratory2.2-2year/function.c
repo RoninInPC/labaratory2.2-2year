@@ -62,6 +62,37 @@ ArrOfCount* SortArrOfCountOfNum(ArrOfCount** A, int Size) {
 	}
 	return Ans;
 }
+void QuickSortOfCountOfNum(ArrOfCount* numbers, int left, int right){
+  ArrOfCount pivot;
+  int l_hold = left; 
+  int r_hold = right; 
+  pivot = numbers[left];
+  while (left < right) 
+  {
+    while ((numbers[right].Num >= pivot.Num) && (left < right))
+      right--; 
+    if (left != right) 
+    {
+      numbers[left] = numbers[right]; 
+      left++; 
+    }
+    while ((numbers[left].Num <= pivot.Num) && (left < right))
+      left++; 
+    if (left != right) 
+    {
+      numbers[right] = numbers[left]; 
+      right--; 
+    }
+  }
+  numbers[left] = pivot; 
+  pivot.Num = left;
+  left = l_hold;
+  right = r_hold;
+  if (left < pivot.Num) 
+	  QuickSortOfCountOfNum(numbers, left, pivot.Num - 1);
+  if (right > pivot.Num)
+	  QuickSortOfCountOfNum(numbers, pivot.Num + 1, right);
+}
 void PrintArrOfString(char** ArrOfString, ArrOfCount* ArrSizeOfString, int Size) {
 	for (int i = 0; i < Size; i++) {
 		printf("%s", ArrOfString[ArrSizeOfString[i].I]);
@@ -71,6 +102,6 @@ void MakeLabExc(char* FileName) {
 	int NumberOfString = GetNumberOfStringInFile(FileName);
 	ArrOfCount* ArrSize = GetSizeOfStringInFile(FileName, NumberOfString); 
 	char** Text = GetArrayOfStrInFile(FileName, ArrSize, NumberOfString);
-	SortArrOfCountOfNum(&ArrSize, NumberOfString);
+	QuickSortOfCountOfNum(ArrSize, 0, NumberOfString - 1);
 	PrintArrOfString(Text, ArrSize, NumberOfString);
 }
